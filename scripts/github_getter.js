@@ -19,15 +19,18 @@ function getRepos(){
     var theUrl=BASE_API_URL+username+"/repos?per_page="+MAX_NUMBER_PROJECTS+"&type=all";
     console.log(theUrl);
     try{
+        //get user
+        var user = JSON.parse(httpGet(BASE_API_URL+username));
+        document.getElementById("pfpic").src=user["avatar_url"]
+
         var repos = JSON.parse(httpGet(theUrl));
-        document.getElementById("pfpic").src=repos[0]["owner"]["avatar_url"]
         repos.forEach(element => {
             console.log(element);
             if(element["archived"]){
             	archived.push(element);
             }
             else{
-            	if(element["owner"]["login"]!=username){
+            	if(element["owner"]["login"]!==username){
             		contrib.push(element);
             	}else{
             		document.getElementById("textarea").innerHTML+="<p><a href='"+element["html_url"]+"' target='_blank'>"+element["name"]+"</a></p>";
